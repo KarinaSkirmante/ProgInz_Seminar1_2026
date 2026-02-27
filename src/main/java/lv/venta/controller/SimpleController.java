@@ -123,7 +123,51 @@ public class SimpleController {
 	
 	
 	
+	//izveidot getmapping funkciju uz /update/id
+	@GetMapping("/update")//localhost:8080/update?id=1
+	// funkcijas deklarācija ar @PathVariable un Model
+	public String getUpdateProductById(@RequestParam(name = "id") int id, Model model)
+	{
+		// parliecinaties, ka id ir pozitīvs, ja nav, tad uz error lapu parmest
+		if(id < 0) {
+			model.addAttribute("package", "Produkta id nevar būt negatīvs");
+			return "error-page";//šī koda rinda parādīs error-page.html lapu ar ziņū, ka id nevar būt negatīvs
+		}
+		
+		for(Product tempP : allProducts) {
+			if(tempP.getId() == id) {
+				model.addAttribute("product", tempP);
+				return "update-one-product";
+			}
+		}
+		
+		model.addAttribute("package", "Produkts ar tādu id neeksistē");
+		return "error-page";
+		
+	}
 	
+	//dabūsu jau redigēto produktu šajā funkcijā kā argumentu
+	@PostMapping("/update")
+	public String postUpdateProductById(@RequestParam(name = "id") int id, Product product) {
+		
+		for(Product tempP : allProducts) {
+			if(tempP.getId() == id) {
+				//TODO pārbaudīt, vai vispār ir jāmaina
+				tempP.setTitle(product.getTitle());
+				tempP.setDescription(product.getDescription());
+				tempP.setPrice(product.getPrice());
+				tempP.setCategory(product.getCategory());
+				tempP.setQuantity(product.getQuantity());
+			}
+		}
+		return "redirect:/getallproducts";
+	}
+	
+	
+	//izveidot postmapping funkciju uz /update/id
+	//funkciajs deklarcija ar @PathVariable, product objekts pec updeitta
+	//saglabat updeitoto produktu saraksta
+	//redirect uz getallproduct endpointu
 	
 	
 	
