@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import lv.venta.model.Category;
 import lv.venta.model.Product;
@@ -76,8 +77,27 @@ public class SimpleController {
 		
 	}
 	
+	@GetMapping("/allproducts")//localhost:8080/allproducts?id=1
+	public String getGetAllProducts2ById(@RequestParam(name = "id") int id, Model model)
+	{
+		if(id < 0) {
+			model.addAttribute("package", "Produkta id nevar būt negatīvs");
+			return "error-page";//šī koda rinda parādīs error-page.html lapu ar ziņū, ka id nevar būt negatīvs
+		}
+		
+		for(Product tempP : allProducts) {
+			if(tempP.getId()==id) {
+				model.addAttribute("package", tempP);
+				return "show-one-product";//sī koda rinda parādīs show-one-product.html lapu
+			}
+		}
+		
+		model.addAttribute("package", "Produkts ar tādu id neeksistē");
+		return "error-page";
+		
+		
+	}
 	
-	//localhost:8080/allproducts?id=1
 	
 	
 
