@@ -113,7 +113,11 @@ public class SimpleController {
 	public String postAddProduct(Product product) {
 		//TODO veikt validācijas un uzstādīt id
 		System.out.println(product);
-		allProducts.add(product);
+		
+		Product newProduct = new Product(product.getTitle(), product.getPrice(), product.getDescription(),
+				product.getCategory(), product.getQuantity());
+		
+		allProducts.add(newProduct);
 		return "redirect:/getallproducts";
 	}
 	
