@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import lv.venta.model.Category;
 import lv.venta.model.Product;
-
+//kontrolieru klase ar endpointiem
 @Controller
 public class SimpleController {
 	
