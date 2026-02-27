@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import lv.venta.model.Category;
@@ -97,6 +98,34 @@ public class SimpleController {
 		
 		
 	}
+	
+	//iesākumā parāda lapu, kurā varēs ievadīt jaunu produktu. Līdzi lapai padodam tukšu produktu
+	@GetMapping("/add") //localhost:8080/add
+	public String getAddProduct(Model model) {
+		model.addAttribute("product", new Product());
+		return "add-one-product";
+	}
+	
+	
+	
+	//pēc submit pogas nospiešanas html pusē, saņemam jau aizpildītu produktu
+	@PostMapping("/add")
+	public String postAddProduct(Product product) {
+		//TODO veikt validācijas un uzstādīt id
+		System.out.println(product);
+		allProducts.add(product);
+		return "redirect:/getallproducts";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
