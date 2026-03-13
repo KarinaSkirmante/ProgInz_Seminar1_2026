@@ -63,8 +63,23 @@ public class CRUDProductServiceImpl implements ICRUDProductService {
 	@Override
 	public Product updateProductById(int id, float price, Category category, String description, int quantity)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Product productForUpdating = retrieveProductById(id);
+		
+		if(category == null || price < 0
+				|| price > 100000 || description == null
+				|| quantity < 0 || quantity > 100000) {
+			throw new Exception("Nav korekti ievades dati");
+		}
+
+	
+		if(productForUpdating.getPrice() != price) {
+			productForUpdating.setPrice(price);
+		}
+		//TODO pabeigt parabudi ar visiem, vai tādi dati jau nav sobrīd
+		productForUpdating.setCategory(category);
+		productForUpdating.setDescription(description);
+		productForUpdating.setQuantity(quantity);
+		return prodRepo.save(productForUpdating);
 	}
 
 	@Override
