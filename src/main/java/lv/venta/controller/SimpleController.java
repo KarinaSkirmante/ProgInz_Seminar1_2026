@@ -163,11 +163,33 @@ public class SimpleController {
 		return "redirect:/getallproducts";
 	}
 	
+
+	@GetMapping("/remove/{id}")//localhost:8080/remove/1
+	public String getRemoveProductById(@PathVariable(name = "id") int id, Model model) {
+		// parliecinaties, ka id ir pozitīvs, ja nav, tad uz error lapu parmest
+		if(id < 0) {
+			model.addAttribute("package", "Produkta id nevar būt negatīvs");
+			return "error-page";//šī koda rinda parādīs error-page.html lapu ar ziņū, ka id nevar būt negatīvs
+		}
+		
+		for(Product tempP : allProducts) {
+			if(tempP.getId() == id) {
+				allProducts.remove(tempP);
+				model.addAttribute("package", allProducts);
+				return "show-all-products";//parada lapu show-all-products.html ar visiem produktiem un izdzesatajam produktam tur neveajadzetu but
+			}
+		}
+		
+		model.addAttribute("package", "Produkts ar tādu id neeksistē");
+		return "error-page";
+		
+	}
 	
-	//izveidot postmapping funkciju uz /update/id
-	//funkciajs deklarcija ar @PathVariable, product objekts pec updeitta
-	//saglabat updeitoto produktu saraksta
-	//redirect uz getallproduct endpointu
+	//TODO
+	//izveidot get mapping funkcijas deklarāciju ar padotu id
+	//parbaudit, ja id ir negatvis, tad paradit error lapu
+	//atrodam koknreto produktu saraksta un to izdzesam un redirektejam uz all products
+	//ja tomer produkt pec ide netiek atrasts, tad paradam error lapu
 	
 	
 	
