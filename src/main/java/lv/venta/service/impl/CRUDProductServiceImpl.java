@@ -75,17 +75,27 @@ public class CRUDProductServiceImpl implements ICRUDProductService {
 		if(productForUpdating.getPrice() != price) {
 			productForUpdating.setPrice(price);
 		}
-		//TODO pabeigt parabudi ar visiem, vai tādi dati jau nav sobrīd
-		productForUpdating.setCategory(category);
-		productForUpdating.setDescription(description);
-		productForUpdating.setQuantity(quantity);
+		
+		if(!productForUpdating.getCategory().equals(category))
+		{
+			productForUpdating.setCategory(category);
+		}
+		if(!productForUpdating.getDescription().equals(description))
+		{
+			productForUpdating.setDescription(description);
+		}
+		if(productForUpdating.getQuantity() != quantity) 
+		{
+			productForUpdating.setQuantity(quantity);
+		}
+		
 		return prodRepo.save(productForUpdating);
 	}
 
 	@Override
 	public void deleteProductById(int id) throws Exception {
-		// TODO Auto-generated method stub
-		
+		Product productForDeleting = retrieveProductById(id);
+		prodRepo.delete(productForDeleting);
 	}
 
 }
