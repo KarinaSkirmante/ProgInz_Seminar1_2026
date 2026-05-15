@@ -70,4 +70,38 @@ public class ProductCRUDController {
 		}
 	}
 	
+	@GetMapping("/update/{id}")//localhost:8080/product/crud/update/2
+	public String getControllerForUpdateById(@PathVariable(name = "id") int id,Model model) {
+		
+		try
+		{
+			Product productFromDB = prodService.retrieveProductById(id);
+			model.addAttribute("product", productFromDB);
+			return "update-one-product";
+		}
+		catch (Exception e) {
+			model.addAttribute("package", e.getMessage());
+			return "error-page";
+		}
+		
+	}
+	
+	@PostMapping("/update/{id}")
+	public String postControllerForUpdateById(@PathVariable(name = "id") int id, Product product,
+			Model model) {
+		try
+		{
+			prodService.updateProductById(id, product.getPrice(), product.getCategory(),
+				product.getDescription(), product.getQuantity());
+			return "redirect:/product/crud/all/" + id; //vai arī uz /product/crud/all
+		}
+		catch (Exception e) {
+			model.addAttribute("package", e.getMessage());
+			return "error-page";
+		}
+	}
+	
+	
+	
+	
 }
