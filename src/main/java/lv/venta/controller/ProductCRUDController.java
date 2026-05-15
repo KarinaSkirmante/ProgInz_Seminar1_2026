@@ -86,6 +86,8 @@ public class ProductCRUDController {
 		
 	}
 	
+	
+	
 	@PostMapping("/update/{id}")
 	public String postControllerForUpdateById(@PathVariable(name = "id") int id, Product product,
 			Model model) {
@@ -101,7 +103,20 @@ public class ProductCRUDController {
 		}
 	}
 	
-	
+	@GetMapping("/delete/{id}")
+	public String getControllerForDeletion(@PathVariable(name = "id") int id, Model model) {
+		try
+		{
+			prodService.deleteProductById(id);
+			ArrayList<Product> productsFromDB = prodService.retrieveAllProducts();
+			model.addAttribute("package", productsFromDB);
+			return "show-all-products";
+		}
+		catch (Exception e) {
+			model.addAttribute("package", e.getMessage());
+			return "error-page";
+		}
+	}
 	
 	
 }
