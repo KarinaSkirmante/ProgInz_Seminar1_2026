@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import lv.venta.model.Product;
@@ -19,7 +21,7 @@ public class ProductCRUDController {
 	private ICRUDProductService prodService;
 	
 	@GetMapping("/all")//localhost:8080/product/crud/all
-	public String getControllerRetrievAllProducts(Model model) {
+	public String getControllerRetrieveAllProducts(Model model) {
 		try
 		{
 			ArrayList<Product> productsFromDB = prodService.retrieveAllProducts();
@@ -32,4 +34,40 @@ public class ProductCRUDController {
 		}
 	}
 
+	@GetMapping("/all/{id}")//localhost:8080/product/crud/all/2
+	public String getControllerRetrieveProductById(
+			@PathVariable(name = "id") int id, Model model) {
+		try
+		{
+			Product productFromDB = prodService.retrieveProductById(id);
+			model.addAttribute("package", productFromDB);
+			return "show-one-product";
+		}
+		catch (Exception e) {
+			model.addAttribute("package", e.getMessage());
+			return "error-page";
+		}
+	}
+	
+
+	@GetMapping("/add")//localhost:8080/product/crud/add
+	public String getControllerForProductAdding(Model model) {
+		model.addAttribute("product", new Product());
+		return "add-one-product";
+	}
+	
+	
+	@PostMapping("/add")///product/crud/add
+	public String postControllerForProductAdding(Product product, Model model) {
+		try
+		{
+			prodService.createNewProduct(product);
+			return "redirect:/product/crud/all";
+		}
+		catch (Exception e) {
+			model.addAttribute("package", e.getMessage());
+			return "error-page";
+		}
+	}
+	
 }
