@@ -56,4 +56,21 @@ public class ProductFilterAndStatsController {
 		
 	}
 	
+	
+	@GetMapping("/keyword/{keyword}")//localhost:8080/product/filter/keyword/Ora
+	public String getControllerFilterByKeyword(@PathVariable(name = "keyword") String keyword,
+			Model model) {
+		try
+		{
+			ArrayList<Product> resultFromDB = service.filterByKeyword(keyword);
+			model.addAttribute("package", resultFromDB);
+			model.addAttribute("info", "Produkti, kuri atbilst " + keyword + " atslēgas vārdam");
+			return "show-all-products";
+		}
+		catch (Exception e) {
+			model.addAttribute("package", e.getMessage());
+			return "error-page";
+		}
+	}
+	
 }
