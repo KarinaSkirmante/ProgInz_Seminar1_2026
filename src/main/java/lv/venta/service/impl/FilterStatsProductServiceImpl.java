@@ -13,19 +13,25 @@ import lv.venta.service.IProductFilterAndStatsService;
 @Service
 public class FilterStatsProductServiceImpl implements IProductFilterAndStatsService {
 
-    private final CRUDProductServiceImpl CRUDProductServiceImpl;
-
 	@Autowired
 	private IProductRepo prodRepo;
 
-    FilterStatsProductServiceImpl(CRUDProductServiceImpl CRUDProductServiceImpl) {
-        this.CRUDProductServiceImpl = CRUDProductServiceImpl;
-    }
-	
 	@Override
 	public ArrayList<Product> filterByPriceLessThan(float threshold) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		if(threshold <= 0) {
+			throw new Exception("Ievadītais cenas slieksnis nav korekts");
+		}
+		
+		if(prodRepo.count() == 0) {
+			throw new Exception("DB nav produktu, tāpēc neko nevar filtrēt");
+		}
+		
+		ArrayList<Product> filteredProducts = prodRepo.findByPriceLessThan(threshold);
+		if(filteredProducts.isEmpty()) {
+			throw new Exception("Nav neviens produkts, kura cena ir mazāka par "+threshold+ " eur");
+		}
+		return filteredProducts;
+		
 	}
 
 	@Override
@@ -48,14 +54,32 @@ public class FilterStatsProductServiceImpl implements IProductFilterAndStatsServ
 
 	@Override
 	public ArrayList<Product> filterByKeyword(String keyword) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		if(keyword==null || keyword.isEmpty()) {
+			throw new Exception("Ievades dati nav korekti");
+		}
+		
+		if(prodRepo.count() == 0) {
+			throw new Exception("DB nav produktu, tāpēc neko nevar filtrēt");
+		}
+		ArrayList<Product> filteredProducts = 
+				prodRepo.findByTitleContainingOrDescriptionContaining(keyword,keyword);
+		
+		if(filteredProducts.isEmpty()) {
+			throw new Exception("Nav neviens produkts, kura nosaukums vai apraksts satur" + keyword);
+		}
+		
+		return filteredProducts;
 	}
 
 	@Override
 	public float calculateAVGPrice() throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		if(prodRepo.count() == 0) {
+			throw new Exception("DB nav produktu, tāpēc neko nevar aprēķināt");
+		}
+		
+		float avgPrice = prodRepo.calculateAVGPriceFromDB();
+		
+		return avgPrice;
 	}
 
 }
