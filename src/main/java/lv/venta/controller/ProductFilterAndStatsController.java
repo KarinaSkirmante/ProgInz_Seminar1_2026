@@ -73,4 +73,20 @@ public class ProductFilterAndStatsController {
 		}
 	}
 	
+	@GetMapping("/avgprice")//localhost:8080/product/filter/avgprice
+	public String getControllerCalculateAVGPrice(Model model) {
+		try
+		{
+			float resultFromDB = service.calculateAVGPrice();
+			model.addAttribute("package", "Vidējā cena ir " + resultFromDB + " eur");
+			return "data";
+			
+		}
+		catch (Exception e) {
+			model.addAttribute("package", e.getMessage());
+			return "error-page";
+		}
+	}
+	
+	
 }
