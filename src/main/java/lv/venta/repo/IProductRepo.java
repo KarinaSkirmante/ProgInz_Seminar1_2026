@@ -1,11 +1,12 @@
 package lv.venta.repo;
 
 import java.util.ArrayList;
-import java.util.Locale.Category;
+
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import lv.venta.model.Category;
 import lv.venta.model.Product;
 public interface IProductRepo extends CrudRepository<Product, Integer>{
 
