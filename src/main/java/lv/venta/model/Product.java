@@ -31,7 +31,7 @@ public class Product {
 	@Column(name = "Title", unique = true)
 	@NotNull
 	@NotEmpty
-	@Pattern(regexp = "[A-ZĒŪĪĻĶĢŠĀŽČŅ]{1}[a-zēūīļķģšāžčņ]{2,20}")
+	@Pattern(regexp = "[A-ZĒŪĪĻĶĢŠĀŽČŅ]{1}[a-zēūīļķģšāžčņ]{2,20}", message = "Jāsattur tikai burti")
 	private String title;
 	
 	@Column(name = "Category")
