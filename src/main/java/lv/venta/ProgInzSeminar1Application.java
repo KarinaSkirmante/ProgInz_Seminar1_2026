@@ -12,15 +12,6 @@ import lv.venta.repo.IProductRepo;
 @SpringBootApplication
 public class ProgInzSeminar1Application {
 
-    private final SimpleController simpleController;
-
-    private final IProductRepo IProductRepo;
-
-    ProgInzSeminar1Application(IProductRepo IProductRepo, SimpleController simpleController) {
-        this.IProductRepo = IProductRepo;
-        this.simpleController = simpleController;
-    }
-
 	public static void main(String[] args) {
 		SpringApplication.run(ProgInzSeminar1Application.class, args);
 	}
